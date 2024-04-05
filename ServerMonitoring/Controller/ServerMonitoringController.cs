@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ServerMonitoring.Services;
 using Tinkerforge;
 
 namespace ServerMonitoring.Controllers
@@ -18,6 +19,8 @@ namespace ServerMonitoring.Controllers
             BrickMaster master = new BrickMaster(UID1, ipcon);
 
             ipcon.Connect(HOST, PORT);
+
+            Piezo_Speaker.Main();
 
         }
     }
