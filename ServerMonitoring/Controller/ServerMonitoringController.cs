@@ -7,6 +7,7 @@ namespace ServerMonitoring.Controllers
     public class ServerMonitoringController : Controller
     {
         private static string HOST = "localhost";
+       // private static var IP = 172.10.20.242;
         private static int PORT = 4223;
         private static string UID1 = "68WXq6";
         private static string UID2 = "62D7kk";
@@ -20,7 +21,7 @@ namespace ServerMonitoring.Controllers
 
             ipcon.Connect(HOST, PORT);
 
-            Piezo_Speaker.Main();
+            Piezo_Speaker.Alarm();
 
         }
     }
