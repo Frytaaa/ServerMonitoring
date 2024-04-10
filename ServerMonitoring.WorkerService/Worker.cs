@@ -13,7 +13,7 @@ public class Worker : BackgroundService
     public Worker(ILogger<Worker> logger, IPConnection ipConnection)
     {
         _logger = logger;
-        _ipConnection = ipConnection;   
+        _ipConnection = ipConnection;
     }
 
 
@@ -24,6 +24,11 @@ public class Worker : BackgroundService
         _ipConnection.Connect(HOST, PORT);
         var temperatureRespone = HandleTemperatureAsync(device);
         if (temperatureRespone.Status == TemperatureStatus.High)
+        {
+            var speaker = new BrickletPiezoSpeakerV2("R7M", _ipConnection);
+            speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
+        }
+        if (temperatureRespone.Status == TemperatureStatus.Low)
         {
             var speaker = new BrickletPiezoSpeakerV2("R7M", _ipConnection);
             speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
