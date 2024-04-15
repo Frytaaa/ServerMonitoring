@@ -33,6 +33,11 @@ public class Worker : BackgroundService
             var speaker = new BrickletPiezoSpeakerV2("R7M", _ipConnection);
             speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
         }
+        if (temperatureResponse.Status == TemperatureStatus.Low)
+        {
+                    var speaker = new BrickletPiezoSpeakerV2("R7M", _ipConnection);
+                    speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
+        }
 
         _ipConnection.Disconnect();
     }
