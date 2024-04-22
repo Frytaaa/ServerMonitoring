@@ -1,4 +1,5 @@
 using MediatR;
+using ServerMonitoring.Application.Responses;
 
 namespace ServerMonitoring.Application.BrickletPTCV2.Queries;
 

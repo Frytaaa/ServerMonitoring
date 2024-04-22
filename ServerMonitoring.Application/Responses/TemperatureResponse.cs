@@ -1,4 +1,4 @@
-namespace ServerMonitoring.Application;
+namespace ServerMonitoring.Application.Responses;
 
 public class TemperatureResponse(int temperature)
 {

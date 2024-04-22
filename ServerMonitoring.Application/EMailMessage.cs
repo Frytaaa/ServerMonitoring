@@ -6,9 +6,9 @@ public class EMailMessage
     public string Subject {get; set;}
     public string Body {get; set;}
     public string Mailaddress = "servermonitoringbcp@gmail.com";
-    public string recipientMail = "alina.winnemoeller@campus.kstl.de"
+    public string recipientMail = "alina.winnemoeller@campus.kstl.de";
 
-    public SendEmail(string subject, string body)
+    public void SendEmail(string subject, string body)
     {
         Subject = subject;
         Body = body;

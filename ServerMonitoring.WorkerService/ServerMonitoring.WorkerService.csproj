@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
         <UserSecretsId>dotnet-ServerMonitoring.WorkerService-737E1107-3577-4D0A-9487-9C9EB7F2EBC0</UserSecretsId>
     </PropertyGroup>
 
@@ -14,5 +15,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ServerMonitoring.Application\ServerMonitoring.Application.csproj" />
+      <ProjectReference Include="..\ServerMonitoring.Infrastructure\ServerMonitoring.Infrastructure.csproj" />
     </ItemGroup>
 </Project>
