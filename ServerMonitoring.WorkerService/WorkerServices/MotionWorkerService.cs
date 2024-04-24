@@ -23,7 +23,10 @@ BrickletMotionDetectorV2 motionV2)
 
                    switch (response.Status)
                    {
-                       case MotionStatus.Active: logger.LogInformation("Something is moving");
+                       case MotionStatus.Active:
+                       logger.LogInformation("Something is moving");
+                       brickletPiezoSpeakerV2.SetAlarm(1000, 5000, 3, 2, 1, 2);
+                       break;
                        //case MotionStatus.NotActive: logger.LogInformation("");
                        default:
                            logger.LogInformation("Everything fine");
