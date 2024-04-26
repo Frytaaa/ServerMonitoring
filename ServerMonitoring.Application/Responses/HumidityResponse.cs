@@ -1,13 +1,14 @@
 namespace ServerMonitoring.Application.Responses;
 
-public class HumidityResponse(int humidity)
+public class HumidityResponse
 {
-    public double Humidity { get; set; }
-    public HumidityStatus Status { get; set; }
+    public double Humidity { get; init; }
+    public HumidityStatus Status { get; init; }
 }
+
 public enum HumidityStatus
 {
-    Normal,
     Low,
+    Normal,
     High
 }

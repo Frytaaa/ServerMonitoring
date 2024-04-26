@@ -8,7 +8,7 @@ public static class ConfigureDevicesExtension
     {
         var devices = configuration.GetSection("Devices");
 
-        services.AddSingleton<IPConnection>(_ => new IPConnection());
+        services.AddSingleton<IPConnection>();
         services.AddSingleton<BrickletPTCV2>(sp =>
             new BrickletPTCV2(devices.GetSection("PTC")["UID"], sp.GetRequiredService<IPConnection>()));
 

@@ -14,15 +14,11 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
         <PackageReference Include="Tinkerforge" Version="2.1.32" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\ServerMonitoring.Domain\ServerMonitoring.Domain.csproj" />
-        <ProjectReference Include="..\ServerMonitoring.Contracts\ServerMonitoring.Contracts.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Abstractions\" />
     </ItemGroup>
 </Project>

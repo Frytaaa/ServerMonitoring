@@ -6,17 +6,19 @@ using ServerMonitoring.Application.Responses;
 
 namespace ServerMonitoring.Application.BrickletHumidityV2.Handlers;
 
-public class GetHumidityQueryHandler : IRequestHandler<GetHumidityQuery, HumidityResponse>
+public class GetHumidityQueryHandler(Tinkerforge.BrickletHumidityV2 device)
+    : IRequestHandler<GetHumidityQuery, HumidityResponse>
 {
     public Task<HumidityResponse> Handle(GetHumidityQuery request, CancellationToken cancellationToken)
     {
-        var humidity = request.Device.GetHumidity();
-        var response = new HumidityResponse(humidity)
+        var humidity = device.GetHumidity();
+        var response = new HumidityResponse
         {
+            Humidity = humidity,
             Status = humidity switch
             {
-                <= 30 => HumidityStatus.Low,
-                >= 55 => HumidityStatus.High,
+                < 40 => HumidityStatus.Low,
+                >= 60 => HumidityStatus.High,
                 _ => HumidityStatus.Normal
             }
         };
