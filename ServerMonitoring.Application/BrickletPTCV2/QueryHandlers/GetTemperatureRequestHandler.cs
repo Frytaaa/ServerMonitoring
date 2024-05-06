@@ -14,7 +14,7 @@ public class GetTemperatureRequestHandler(Tinkerforge.BrickletPTCV2 device)
         var temperature = device.GetTemperature();
         var response = new TemperatureResponse
         {
-            Temperature = temperature,
+            Temperature = temperature / 100.0,
             Status = temperature switch
             {
                 <= 1700 => TemperatureStatus.Low,
