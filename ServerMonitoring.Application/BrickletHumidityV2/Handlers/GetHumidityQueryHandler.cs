@@ -14,11 +14,11 @@ public class GetHumidityQueryHandler(Tinkerforge.BrickletHumidityV2 device)
         var humidity = device.GetHumidity();
         var response = new HumidityResponse
         {
-            Humidity = humidity,
+            Humidity = humidity / 100.0,
             Status = humidity switch
             {
-                < 40 => HumidityStatus.Low,
-                >= 60 => HumidityStatus.High,
+                < 4000 => HumidityStatus.Low,
+                >= 6000 => HumidityStatus.High,
                 _ => HumidityStatus.Normal
             }
         };
