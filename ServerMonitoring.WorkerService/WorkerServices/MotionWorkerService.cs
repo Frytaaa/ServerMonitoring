@@ -11,10 +11,15 @@ BrickletPiezoSpeakerV2 brickletPiezoSpeakerV2,
 BrickletMotionDetector md,
 MailService mailService)
 {
+    md.SetMotionDetectionPeriod(100);
     // Callback function for motion detected callback
     static void MotionDetectedCB(BrickletMotionDetector sender)
     {
         Console.WriteLine("Motion Detected");
+        logger.LogCritical("Motion detected ${sender}", response.Temperature);
+        mailService.SendMail("Motion detected",
+                                    $"Motion has been detected");
+        speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
     }
 
     // Callback function for detection cycle ended callback
