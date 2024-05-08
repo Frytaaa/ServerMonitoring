@@ -11,7 +11,7 @@ builder.Services.ConfigureDevices(builder.Configuration);
 builder.Services.AddHostedService<TinkerforgeConnectionHostedService>();
 builder.Services.AddHostedService<TemperatureWorkerService>();
 builder.Services.AddHostedService<HumidityWorkerService>();
-
+builder.Services.AddHostedService<AmbientLightWorkerService>();
 try
 {
     var host = builder.Build();
