@@ -30,6 +30,7 @@ public class NFCScannerWorkerService(
                     break;
                 case NFCScannerStatus.NotOk:
                     ledStatus = LEDButtonStatus.Red;
+                    logger.LogError("NFC Scanner Status: NotOk");
                     break;
                 default:
                     ledStatus = LEDButtonStatus.Blue;
