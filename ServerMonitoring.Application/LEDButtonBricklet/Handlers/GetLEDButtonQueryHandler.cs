@@ -8,7 +8,7 @@ namespace ServerMonittoring.Application.LEDButtonBricklet.Handlers
 {
     public class GetLEDButtonQueryHandler(Tinkerforge.BrickletRGBLEDButton device) : IRequestHandler<GetLEDButtonQuery, LEDButtonResponse>
     {
-        public Task<LEDButtonResponse> Handle(GetLEDButtonQuery request, CancellationToken cancellationToken)
+        public Task<LEDButtonResponse> Handle(GetLEDButtonQuery _, CancellationToken cancellationToken)
         {
             var response = new LEDButtonResponse();
 

@@ -1,10 +1,6 @@
 ﻿using MediatR;
 using ServerMonitoring.Application.NFCScanner.Queries;
 using ServerMonitoring.Application.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +8,7 @@ namespace ServerMonitoring.Application.NFCScanner.Handler
 {
     public class GetNFCScannerQueryHandler(Tinkerforge.BrickletNFC device) : IRequestHandler<GetNFCScannerQuery, NFCScannerResponse>
     {
-        public Task<NFCScannerResponse> Handle(GetNFCScannerQuery request, CancellationToken cancellationToken)
+        public Task<NFCScannerResponse> Handle(GetNFCScannerQuery _, CancellationToken cancellationToken)
         {
             var response = new NFCScannerResponse();
 
@@ -20,24 +16,24 @@ namespace ServerMonitoring.Application.NFCScanner.Handler
 
             if (idle)
             {
-                response.Status = NFCScannerStatus.Ready;
+                response = new NFCScannerResponse { Status = NFCScannerStatus.Ready };
             }
             else if (state == Tinkerforge.BrickletNFC.READER_STATE_REQUEST_TAG_ID_READY)
             {
                 device.ReaderGetTagID(out byte tagType, out byte[] tagID);
                 if (tagID != null && tagID.Length > 0)
                 {
-                    response.NFCScanner = BitConverter.ToDouble(tagID, 0);
-                    response.Status = NFCScannerStatus.OK;
+
+                    response = new NFCScannerResponse { Status = NFCScannerStatus.OK };
                 }
                 else
                 {
-                    response.Status = NFCScannerStatus.NotOk;
+                    response = new NFCScannerResponse { Status = NFCScannerStatus.NotOk };
                 }
             }
             else
             {
-                response.Status = NFCScannerStatus.NotOk;
+                response = new NFCScannerResponse { Status = NFCScannerStatus.NotOk };
             }
 
             return Task.FromResult(response);

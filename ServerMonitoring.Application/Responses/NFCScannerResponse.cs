@@ -9,7 +9,7 @@ namespace ServerMonitoring.Application.Responses
     public class NFCScannerResponse
     {
         public double NFCScanner { get; init; }
-        public NFCScannerStatus Status { get; int; }
+        public NFCScannerStatus Status { get; init; }
     }
 
     public enum NFCScannerStatus
