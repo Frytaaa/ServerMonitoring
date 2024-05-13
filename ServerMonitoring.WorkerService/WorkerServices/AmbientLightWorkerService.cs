@@ -9,7 +9,6 @@ namespace ServerMonitoring.WorkerService.WorkerServices;
 public class AmbientLightWorkerService(
     ILogger<AmbientLightWorkerService> logger,
     ISender mediator,
-    BrickletPiezoSpeakerV2 brickletPiezoSpeakerV2,
     MailService mailService)
     : BackgroundService
 {
