@@ -1,39 +1,42 @@
 using MediatR;
-using ServerMonitoring.Application;
+using Microsoft.Extensions.Logging;
 using ServerMonitoring.Application.BrickletMotionDetectorV2.Queries;
+using ServerMonitoring.Application.EPaper;
 using ServerMonitoring.Application.Responses;
-using Tinkerforge;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-public class MotionWorkerService(
-ILogger<MotionWorkerService> logger,
-ISender mediator,
-BrickletPiezoSpeakerV2 brickletPiezoSpeakerV2,
-BrickletMotionDetector md,
-MailService mailService)
+namespace ServerMonitoring.WorkerService.WorkerServices
 {
-    md.SetMotionDetectionPeriod(100);
-    // Callback function for motion detected callback
-    static void MotionDetectedCB(BrickletMotionDetector sender)
+    public class MotionWorkerService : BackgroundService
     {
-        Console.WriteLine("Motion Detected");
-        logger.LogCritical("Motion detected ${sender}", response.Temperature);
-        mailService.SendMail("Motion detected",
-                                    $"Motion has been detected");
-        speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
-    }
+        private readonly ILogger<MotionWorkerService> _logger;
+        private readonly ISender _mediator;
+        private readonly IEPaperService _ePaperService;
 
-    // Callback function for detection cycle ended callback
-    static void DetectionCycleEndedCB(BrickletMotionDetector sender)
-    {
-        Console.WriteLine("Detection Cycle Ended (next detection possible in ~3 seconds)");
-    }
+        public MotionWorkerService(ILogger<MotionWorkerService> logger, ISender mediator, IEPaperService ePaperService)
+        {
+            _logger = logger;
+            _mediator = mediator;
+            _ePaperService = ePaperService;
+        }
 
-    static void Main()
-    {
-       // Register motion detected callback to function MotionDetectedCB
-        md.MotionDetectedCallback += MotionDetectedCB;
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                var motionResponse = await _mediator.Send(new GetMotionQuery(), stoppingToken);
 
-        // Register detection cycle ended callback to function DetectionCycleEndedCB
-        md.DetectionCycleEndedCallback += DetectionCycleEndedCB;
+                if (motionResponse.Motion)
+                {
+                    // Bewegung erkannt, BCP auf dem E-Paper anzeigen
+                    await _ePaperService.DisplayMessage("BCP");
+                }
+
+                // Wartezeit zwischen den Überprüfungen
+                await Task.Delay(1000, stoppingToken);
+            }
+        }
     }
 }
