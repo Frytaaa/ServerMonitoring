@@ -1,6 +1,7 @@
 using MediatR;
 using ServerMonitoring.Application;
 using ServerMonitoring.Application.BrickletPTCV2.Queries;
+using ServerMonitoring.Application.SegmentDisplay;
 using ServerMonitoring.Application.Responses;
 using Tinkerforge;
 
@@ -10,6 +11,7 @@ public class TemperatureWorkerService(
     ILogger<TemperatureWorkerService> logger,
     ISender mediator,
     BrickletPiezoSpeakerV2 speaker,
+    SegmentDisplayWorkerService display,
     MailService mailService)
     : BackgroundService
 {
@@ -20,6 +22,7 @@ public class TemperatureWorkerService(
         while (!stoppingToken.IsCancellationRequested)
         {
             var response = await mediator.Send(new GetTemperatureQuery(), stoppingToken);
+            display.DisplayTemperatur(response.Temperatur);
             if (_lastStatus != response.Status)
             {
                 switch (response.Status)
