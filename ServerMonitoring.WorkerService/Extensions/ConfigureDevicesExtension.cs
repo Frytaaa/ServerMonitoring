@@ -1,3 +1,4 @@
+using ServerMonitoring.Application.BrickletMotionDetectorV2;
 using ServerMonitoring.Application.NFCScanner;
 using Tinkerforge;
 
@@ -41,14 +42,17 @@ public static class ConfigureDevicesExtension
         });
 
         services.AddSingleton<BrickletEPaper296x128>(sp =>
-            {
-                var ePaper = new BrickletEPaper296x128(devices.GetSection("EPaper")["UID"],
-                    sp.GetRequiredService<IPConnection>());
-                ePaper.DrawText(16, 48, BrickletEPaper296x128.FONT_24X32, BrickletEPaper296x128.COLOR_RED,
-                    BrickletEPaper296x128.ORIENTATION_HORIZONTAL, "BPC");
-                ePaper.Draw();
-                return ePaper;
-            }
-        );
+            new BrickletEPaper296x128(devices.GetSection("EPaper")["UID"], sp.GetRequiredService<IPConnection>()));
+
+        services.AddSingleton<BrickletMotionDetectorV2>(sp =>
+        {
+            var motionDetector = new BrickletMotionDetectorV2(devices.GetSection("MotionDetector")["UID"],
+                sp.GetRequiredService<IPConnection>());
+            var motionService = sp.GetRequiredService<MotionService>();
+
+            motionDetector.MotionDetectedCallback += motionService.MotionDetectedCB;
+            motionDetector.DetectionCycleEndedCallback += motionService.DetectionCycleEndedCB;
+            return motionDetector;
+        });
     }
 }
