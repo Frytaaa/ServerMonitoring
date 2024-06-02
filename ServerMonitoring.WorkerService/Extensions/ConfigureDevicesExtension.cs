@@ -39,5 +39,16 @@ public static class ConfigureDevicesExtension
             nfc.SetMode(BrickletNFC.MODE_READER);
             return nfc;
         });
+
+        services.AddSingleton<BrickletEPaper296x128>(sp =>
+            {
+                var ePaper = new BrickletEPaper296x128(devices.GetSection("EPaper")["UID"],
+                    sp.GetRequiredService<IPConnection>());
+                ePaper.DrawText(16, 48, BrickletEPaper296x128.FONT_24X32, BrickletEPaper296x128.COLOR_RED,
+                    BrickletEPaper296x128.ORIENTATION_HORIZONTAL, "BPC");
+                ePaper.Draw();
+                return ePaper;
+            }
+        );
     }
 }
