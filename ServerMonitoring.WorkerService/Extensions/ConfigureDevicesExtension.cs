@@ -1,3 +1,4 @@
+using ServerMonitoring.Application.NFCScanner;
 using Tinkerforge;
 
 namespace ServerMonitoring.WorkerService.Extensions;
