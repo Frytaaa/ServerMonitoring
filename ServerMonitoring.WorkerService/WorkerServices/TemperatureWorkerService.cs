@@ -1,8 +1,8 @@
 using MediatR;
 using ServerMonitoring.Application;
 using ServerMonitoring.Application.BrickletPTCV2.Queries;
-using ServerMonitoring.Application.SegmentDisplay;
 using ServerMonitoring.Application.Responses;
+using ServerMonitoring.Application.SegmentDisplay.Commands;
 using Tinkerforge;
 
 namespace ServerMonitoring.WorkerService.WorkerServices;
@@ -11,7 +11,6 @@ public class TemperatureWorkerService(
     ILogger<TemperatureWorkerService> logger,
     ISender mediator,
     BrickletPiezoSpeakerV2 speaker,
-    SegmentDisplayWorkerService display,
     MailService mailService)
     : BackgroundService
 {
@@ -21,24 +20,26 @@ public class TemperatureWorkerService(
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            var response = await mediator.Send(new GetTemperatureQuery(), stoppingToken);
-            display.DisplayTemperatur(response.Temperatur);
-            if (_lastStatus != response.Status)
+            var temperatureResponse = await mediator.Send(new GetTemperatureQuery(), stoppingToken);
+            await mediator.Send(new SetSegmentsCommand { Temperature = temperatureResponse.Temperature },
+                stoppingToken);
+
+            if (_lastStatus != temperatureResponse.Status)
             {
-                switch (response.Status)
+                switch (temperatureResponse.Status)
                 {
                     case TemperatureStatus.Critical:
-                        logger.LogCritical("Temperature is critical ${Temperature}", response.Temperature);
+                        logger.LogCritical("Temperature is critical ${Temperature}", temperatureResponse.Temperature);
                         mailService.SendMail("Temperature is critical",
-                            $"The temperature reached a critical level. Please check the server immediately. Temperature {response.Temperature}°C");
+                            $"The temperature reached a critical level. Please check the server immediately. Temperature {temperatureResponse.Temperature}°C");
                         speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
                         break;
                     case TemperatureStatus.High:
                     case TemperatureStatus.Low:
                         logger.LogWarning("Temperature is outside the normal value ${Temperature}",
-                            response.Temperature);
+                            temperatureResponse.Temperature);
                         mailService.SendMail("The temperature is outside the normal value.",
-                            $"Please check the server as soon as possible. Temperature {response.Temperature} °C");
+                            $"Please check the server as soon as possible. Temperature {temperatureResponse.Temperature} °C");
                         break;
                     case TemperatureStatus.Normal:
                     default:
@@ -46,7 +47,7 @@ public class TemperatureWorkerService(
                         break;
                 }
 
-                _lastStatus = response.Status;
+                _lastStatus = temperatureResponse.Status;
             }
 
             await Task.Delay(1000, stoppingToken);
