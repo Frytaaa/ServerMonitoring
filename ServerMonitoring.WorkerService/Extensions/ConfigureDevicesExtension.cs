@@ -17,9 +17,17 @@ public static class ConfigureDevicesExtension
 
         services.AddSingleton<BrickletHumidityV2>(sp =>
             new BrickletHumidityV2(devices.GetSection("Humidity")["UID"], sp.GetRequiredService<IPConnection>()));
-
+        
         services.AddSingleton<BrickletAmbientLightV3>(sp =>
             new BrickletAmbientLightV3(devices.GetSection("AmbientLight")["UID"],
                 sp.GetRequiredService<IPConnection>()));
+        services.AddSingleton<BrickletNFC>(sp =>
+            {
+                var nfc = new BrickletNFC(devices.GetSection("NFC")["UID"], sp.GetRequiredService<IPConnection>());
+                var nfcService = sp.GetRequiredService<NFCService>();
+                nfc.ReaderStateChangedCallback += nfcService.ReaderStateChangedCB;
+                nfc.SetMode(BrickletNFC.MODE_READER);
+                return nfc;
+            });
     }
 }
