@@ -1,3 +1,4 @@
+using ServerMonitoring.Application.NFCScanner;
 using Tinkerforge;
 
 namespace ServerMonitoring.WorkerService.Extensions;
@@ -21,5 +22,13 @@ public static class ConfigureDevicesExtension
         services.AddSingleton<BrickletAmbientLightV3>(sp =>
             new BrickletAmbientLightV3(devices.GetSection("AmbientLight")["UID"],
                 sp.GetRequiredService<IPConnection>()));
+        services.AddSingleton<BrickletNFC>(sp =>
+            {
+                var nfc = new BrickletNFC(devices.GetSection("NFC")["UID"], sp.GetRequiredService<IPConnection>());
+                var nfcService = sp.GetRequiredService<NFCService>();
+                nfc.ReaderStateChangedCallback += nfcService.ReaderStateChangedCB;
+                nfc.SetMode(BrickletNFC.MODE_READER);
+                return nfc;
+            });
     }
 }
