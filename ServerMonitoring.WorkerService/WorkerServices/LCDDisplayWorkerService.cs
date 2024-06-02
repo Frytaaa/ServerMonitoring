@@ -1,0 +1,19 @@
+﻿using MediatR;
+using ServerMonitoring.Application.LCDDisplay.Commands;
+
+namespace ServerMonitoring.WorkerService.WorkerServices;
+
+public class LCDDisplayWorkerService(
+    ILogger<LCDDisplayWorkerService> logger,
+    ISender mediator)
+    : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            await mediator.Send(new ShowCurrentTimeCommand(), stoppingToken);
+            await Task.Delay(5000, stoppingToken);
+        }
+    }
+}

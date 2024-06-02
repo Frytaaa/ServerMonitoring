@@ -14,6 +14,7 @@ builder.Services.AddHostedService<TinkerforgeConnectionHostedService>();
 builder.Services.AddHostedService<TemperatureWorkerService>();
 builder.Services.AddHostedService<HumidityWorkerService>();
 builder.Services.AddHostedService<AmbientLightWorkerService>();
+builder.Services.AddHostedService<LCDDisplayWorkerService>();
 
 try
 {
