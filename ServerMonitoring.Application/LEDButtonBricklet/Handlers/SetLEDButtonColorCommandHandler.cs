@@ -10,6 +10,8 @@ namespace ServerMonitoring.Application.LEDButtonBricklet.Handlers
     {
         public Task Handle(SetLEDButtonColorCommand request, CancellationToken cancellationToken)
         {
+            Console.WriteLine("SetLEDButtonColorCommandHandler");
+            Console.WriteLine(request.Color);
             switch (request.Color)
             {
                 case LEDColor.Red:

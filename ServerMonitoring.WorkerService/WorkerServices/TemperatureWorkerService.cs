@@ -32,12 +32,11 @@ public class TemperatureWorkerService(
                         logger.LogCritical("Temperature is critical ${Temperature}", temperatureResponse.Temperature);
                         mailService.SendMail("Temperature is critical",
                             $"The temperature reached a critical level. Please check the server immediately. Temperature {temperatureResponse.Temperature}°C");
-                        speaker.SetAlarm(1000, 5000, 3, 2, 1, 2);
+                        speaker.SetAlarm(800, 2000, 10, 1, 5, 2);
                         break;
                     case TemperatureStatus.High:
                     case TemperatureStatus.Low:
-                        logger.LogWarning("Temperature is outside the normal value ${Temperature}",
-                            temperatureResponse.Temperature);
+                        logger.LogWarning("Temperature is outside the normal value {Temperature}", temperatureResponse.Temperature);
                         mailService.SendMail("The temperature is outside the normal value.",
                             $"Please check the server as soon as possible. Temperature {temperatureResponse.Temperature} °C");
                         break;

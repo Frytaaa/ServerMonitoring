@@ -1,5 +1,7 @@
+using ServerMonitoring.Application.AmbientLightBricklet;
+using ServerMonitoring.Application.BrickletHumidityV2;
 using ServerMonitoring.Application.BrickletMotionDetectorV2;
-using ServerMonitoring.Application.NFCScanner;
+using ServerMonitoring.Application.NfcScanner;
 using Tinkerforge;
 
 namespace ServerMonitoring.WorkerService.Extensions;
@@ -9,8 +11,6 @@ public static class ConfigureDevicesExtension
     public static void ConfigureDevices(this IServiceCollection services, IConfiguration configuration)
     {
         var devices = configuration.GetSection("Devices");
-
-        services.AddSingleton<IPConnection>();
         services.AddSingleton<BrickletPTCV2>(sp =>
             new BrickletPTCV2(devices.GetSection("PTC")["UID"], sp.GetRequiredService<IPConnection>()));
 
@@ -19,11 +19,20 @@ public static class ConfigureDevicesExtension
                 sp.GetRequiredService<IPConnection>()));
 
         services.AddSingleton<BrickletHumidityV2>(sp =>
-            new BrickletHumidityV2(devices.GetSection("Humidity")["UID"], sp.GetRequiredService<IPConnection>()));
-
+        {
+            var humidity = new BrickletHumidityV2(devices.GetSection("Humidity")["UID"],
+                sp.GetRequiredService<IPConnection>());
+            humidity.HumidityCallback += HumidityCallback.GetHumidityCallback;
+            humidity.SetHumidityCallbackConfiguration(10000, false, 'o', 40 * 100, 60 * 100);
+            return humidity;
+        });
         services.AddSingleton<BrickletAmbientLightV3>(sp =>
-            new BrickletAmbientLightV3(devices.GetSection("AmbientLight")["UID"],
-                sp.GetRequiredService<IPConnection>()));
+        {
+            var ambientLight = new BrickletAmbientLightV3(devices.GetSection("AmbientLight")["UID"],
+                sp.GetRequiredService<IPConnection>());
+            ambientLight.IlluminanceCallback += IlluminanceCallback.GetIlluminanceCallback;
+            return ambientLight;
+        });
 
         services.AddSingleton<BrickletSegmentDisplay4x7V2>(sp =>
             new BrickletSegmentDisplay4x7V2(devices.GetSection("SegmentDisplay")["UID"],
@@ -35,11 +44,14 @@ public static class ConfigureDevicesExtension
         services.AddSingleton<BrickletNFC>(sp =>
         {
             var nfc = new BrickletNFC(devices.GetSection("NFC")["UID"], sp.GetRequiredService<IPConnection>());
-            var nfcService = sp.GetRequiredService<NFCService>();
-            nfc.ReaderStateChangedCallback += nfcService.ReaderStateChangedCB;
+            nfc.ReaderStateChangedCallback += NfcService.ReaderStateChangedCB;
             nfc.SetMode(BrickletNFC.MODE_READER);
             return nfc;
         });
+
+        services.AddSingleton<BrickletRGBLEDButton>(sp =>
+            new BrickletRGBLEDButton(devices.GetSection("RGBLEDButton")["UID"],
+                sp.GetRequiredService<IPConnection>()));
 
         services.AddSingleton<BrickletEPaper296x128>(sp =>
             new BrickletEPaper296x128(devices.GetSection("EPaper")["UID"], sp.GetRequiredService<IPConnection>()));
