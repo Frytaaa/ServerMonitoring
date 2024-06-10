@@ -11,6 +11,7 @@ namespace ServerMonitoring.Application.LCDDisplay.CommandHandlers
     {
         public Task Handle(ShowCurrentTimeCommand request, CancellationToken cancellationToken)
         {
+  
             // Aktuelle Uhrzeit abrufen
             var currentTime = DateTime.Now.ToString("HH:mm:ss");
 
