@@ -18,10 +18,4 @@
       <ProjectReference Include="..\ServerMonitoring.Application\ServerMonitoring.Application.csproj" />
       <ProjectReference Include="..\ServerMonitoring.Infrastructure\ServerMonitoring.Infrastructure.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
 </Project>

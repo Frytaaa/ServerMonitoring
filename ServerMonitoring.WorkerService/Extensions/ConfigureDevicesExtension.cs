@@ -22,15 +22,12 @@ public static class ConfigureDevicesExtension
         {
             var humidity = new BrickletHumidityV2(devices.GetSection("Humidity")["UID"],
                 sp.GetRequiredService<IPConnection>());
-            humidity.HumidityCallback += HumidityCallback.GetHumidityCallback;
-            humidity.SetHumidityCallbackConfiguration(10000, false, 'o', 40 * 100, 60 * 100);
             return humidity;
         });
         services.AddSingleton<BrickletAmbientLightV3>(sp =>
         {
             var ambientLight = new BrickletAmbientLightV3(devices.GetSection("AmbientLight")["UID"],
                 sp.GetRequiredService<IPConnection>());
-            ambientLight.IlluminanceCallback += IlluminanceCallback.GetIlluminanceCallback;
             return ambientLight;
         });
 
@@ -44,8 +41,6 @@ public static class ConfigureDevicesExtension
         services.AddSingleton<BrickletNFC>(sp =>
         {
             var nfc = new BrickletNFC(devices.GetSection("NFC")["UID"], sp.GetRequiredService<IPConnection>());
-            nfc.ReaderStateChangedCallback += NfcService.ReaderStateChangedCB;
-            nfc.SetMode(BrickletNFC.MODE_READER);
             return nfc;
         });
 
@@ -60,10 +55,6 @@ public static class ConfigureDevicesExtension
         {
             var motionDetector = new BrickletMotionDetectorV2(devices.GetSection("MotionDetector")["UID"],
                 sp.GetRequiredService<IPConnection>());
-            var motionService = sp.GetRequiredService<MotionService>();
-
-            motionDetector.MotionDetectedCallback += motionService.MotionDetectedCB;
-            motionDetector.DetectionCycleEndedCallback += motionService.DetectionCycleEndedCB;
             return motionDetector;
         });
     }

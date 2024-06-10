@@ -3,8 +3,8 @@ using ServerMonitoring.Application.LCDDisplay.Commands;
 
 namespace ServerMonitoring.WorkerService.WorkerServices;
 
-public class LCDDisplayWorkerService(
-    ILogger<LCDDisplayWorkerService> logger,
+public class LcdDisplayWorkerService(
+    ILogger<LcdDisplayWorkerService> logger,
     ISender mediator)
     : BackgroundService
 {
