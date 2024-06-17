@@ -49,7 +49,7 @@ public static class ConfigureDevicesExtension
                 sp.GetRequiredService<IPConnection>()));
 
         services.AddSingleton<BrickletEPaper296x128>(sp =>
-            new BrickletEPaper296x128(devices.GetSection("EPaper")["UID"], sp.GetRequiredService<IPConnection>()));
+            new BrickletEPaper296x128(devices.GetSection("EPaperDisplay")["UID"], sp.GetRequiredService<IPConnection>()));
 
         services.AddSingleton<BrickletMotionDetectorV2>(sp =>
         {

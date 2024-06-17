@@ -14,6 +14,7 @@ builder.Services.AddHostedService<TinkerforgeConnectionHostedService>();
 builder.Services.ConfigureDevices(builder.Configuration);
 builder.Services.AddHostedService<TemperatureWorkerService>();
 builder.Services.AddHostedService<LcdDisplayWorkerService>();
+builder.Services.AddHostedService<DevicesInitializatio>();
 
 try
 {
