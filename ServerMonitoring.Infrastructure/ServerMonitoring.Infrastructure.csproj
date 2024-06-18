@@ -17,8 +17,4 @@
         <ProjectReference Include="..\ServerMonitoring.Application\ServerMonitoring.Application.csproj" />
         <ProjectReference Include="..\ServerMonitoring.Domain\ServerMonitoring.Domain.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Reporistories\" />
-    </ItemGroup>
 </Project>

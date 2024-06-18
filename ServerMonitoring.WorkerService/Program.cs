@@ -15,7 +15,6 @@ builder.Services.ConfigureDevices(builder.Configuration);
 builder.Services.AddHostedService<TemperatureWorkerService>();
 builder.Services.AddHostedService<LcdDisplayWorkerService>();
 builder.Services.AddHostedService<DevicesInitializatio>();
-
 try
 {
     var host = builder.Build();
