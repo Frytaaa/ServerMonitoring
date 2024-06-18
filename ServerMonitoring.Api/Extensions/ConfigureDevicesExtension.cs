@@ -1,10 +1,6 @@
-using ServerMonitoring.Application.AmbientLightBricklet;
-using ServerMonitoring.Application.BrickletHumidityV2;
-using ServerMonitoring.Application.BrickletMotionDetectorV2;
-using ServerMonitoring.Application.NfcScanner;
 using Tinkerforge;
 
-namespace ServerMonitoring.WorkerService.Extensions;
+namespace ServerMonitoring.Api.Extensions;
 
 public static class ConfigureDevicesExtension
 {

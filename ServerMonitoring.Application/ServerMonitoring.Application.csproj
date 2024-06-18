@@ -19,10 +19,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\ServerMonitoring.Domain\ServerMonitoring.Domain.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="LCDDisplay\Query\" />
     </ItemGroup>
 </Project>

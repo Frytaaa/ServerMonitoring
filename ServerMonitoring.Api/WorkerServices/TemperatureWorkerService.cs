@@ -5,7 +5,7 @@ using ServerMonitoring.Application.Responses;
 using ServerMonitoring.Application.SegmentDisplay.Commands;
 using Tinkerforge;
 
-namespace ServerMonitoring.WorkerService.WorkerServices;
+namespace ServerMonitoring.Api.WorkerServices;
 
 public class TemperatureWorkerService(
     ILogger<TemperatureWorkerService> logger,
