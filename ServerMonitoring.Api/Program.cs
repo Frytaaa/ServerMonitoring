@@ -30,6 +30,7 @@ builder.Services.AddHostedService<SignalRWorkerService>();
 builder.Services.AddHostedService<TemperatureWorkerService>();
 builder.Services.AddHostedService<LcdDisplayWorkerService>();
 builder.Services.AddHostedService<DevicesInitializatio>();
+builder.Services.AddHostedService<HumidityWorkerService>();
 
 var app = builder.Build();
 app.MapHub<MonitoringHub>("/hub");
